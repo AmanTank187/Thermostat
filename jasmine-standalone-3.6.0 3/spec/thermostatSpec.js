@@ -22,7 +22,7 @@ describe('thermostat', function(){
       for (var i = 0; i < 5; i++) {
         thermostat.decreaseTemperature();
         }
-      
+
       expect(thermostat._temperature).toEqual(15);
     });
 
@@ -52,5 +52,48 @@ describe('thermostat', function(){
       expect(function(){thermostat.increaseTemperature();}).toThrowError('Maximum Temperature of 32 Reached');
       expect(thermostat._temperature).toEqual(32);
     });
+
+    it('Passing off makes the powersaving status falsew', function(){
+      thermostat.powerSavingMode('off')
+      expect(thermostat.powerSaving).toBe(false);
+    });
+
+    it('Passing on makes the powersaving status true', function(){
+      thermostat.powerSavingMode('off')
+      thermostat.powerSavingMode('on')
+      expect(thermostat.powerSaving).toBe(true);
+    });
+  });
+
+  describe('Reset function', function(){
+    it('Will reset the temperature back to 20', function(){
+      for (var i = 0; i < 4; i++) {
+        thermostat.increaseTemperature();
+        }
+      thermostat.reset()
+      expect(thermostat._temperature).toEqual(20);
+    });
+  });
+
+  describe('Usage checker',function(){
+    it('It will return medium Usage when <= 25', function(){
+      expect(thermostat.checkUsage()).toEqual("medium-usage")
+    });
+
+    it('It will return low Usage when < 18', function(){
+      for (var i = 0; i < 4; i++) {
+        thermostat.decreaseTemperature();
+        }
+      expect(thermostat.checkUsage()).toEqual("low-usage")
+    });
+
+    it('It will return low Usage when < 18', function(){
+      thermostat.powerSavingMode('off')
+      for (var i = 0; i < 8; i++) {
+        thermostat.increaseTemperature();
+        }
+      expect(thermostat.checkUsage()).toEqual("high-usage")
+    });
+
   });
 });
