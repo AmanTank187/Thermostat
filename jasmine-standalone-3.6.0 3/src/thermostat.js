@@ -4,4 +4,8 @@ class Thermostat{
   constructor(){
     this._temperature = 20; 
   }
+
+  increaseTemperature() {
+    this._temperature += 5;
+  }
 }
